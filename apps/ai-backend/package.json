@@ -1,0 +1,22 @@
+{
+  "name": "ai-backend",
+  "module": "index.js",
+  "type": "module",
+  "scripts": {
+		"pull": "prisma db pull",
+    "generate":"prisma generate"
+	},
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.2.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.18.0",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9",
+    "prisma": "^6.2.1"
+  }
+}
