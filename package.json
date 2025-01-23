@@ -8,7 +8,10 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.1",
     "prettier": "^3.2.5",
+    "tailwindcss": "^4.0.0",
     "turbo": "^2.3.3",
     "typescript": "5.5.4"
   },
