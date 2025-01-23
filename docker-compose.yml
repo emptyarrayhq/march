@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres_container
+    restart: always
+    env_file: ./apps/ai-backend/.env         # Use the backend .env file
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}        # From .env file
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}# From .env file
+      POSTGRES_DB: ${POSTGRES_DB}            # From .env file
+    ports:
+      - "5432:5432"                          # Expose PostgreSQL
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .                            # Adjusted to the root folder since using a single Dockerfile
+      dockerfile: Dockerfile.bun                # Point to the root-level Dockerfile
+    container_name: backend_container
+    restart: always
+    env_file: ./apps/ai-backend/.env        # Backend-specific .env
+    depends_on:
+      - postgres                            # Ensure PostgreSQL starts first
+    ports:
+      - "8080:8080"                         # Expose backend
+    volumes:
+      - ./apps/ai-backend:/app/backend     # Mount the backend codebase
+
+  frontend:
+    build:
+      context: .                            # Adjusted to the root folder since using a single Dockerfile
+      dockerfile: Dockerfile.bun             # Point to the root-level Dockerfile
+    container_name: frontend_container
+    restart: always
+    env_file: ./apps/web/.env.local         # Frontend-specific .env
+    ports:
+      - "3000:3000"                         # Expose frontend
+    volumes:
+      - ./apps/web:/app/frontend           # Mount the frontend codebase
+
+volumes:
+  postgres_data:                            # Persistent volume for PostgreSQL

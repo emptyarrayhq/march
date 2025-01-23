@@ -1,0 +1,37 @@
+# Stage 1: Backend (using Node.js 20 and Bun)
+FROM node:20 as backend
+
+# Set working directory for backend
+WORKDIR /app/backend
+
+# Install Bun (after installing Node.js)
+RUN curl -fsSL https://bun.sh/install | bash
+
+# Set the environment variables for Bun
+ENV PATH="/root/.bun/bin:${PATH}"
+
+# Copy the backend files
+COPY ./apps/ai-backend ./
+
+# Install dependencies using Bun (for the backend)
+RUN bun install
+
+# Stage 2: Frontend (using Node.js 20 and Bun)
+FROM node:20 as frontend
+
+# Set working directory for frontend
+WORKDIR /app/frontend
+
+# Install Bun (after installing Node.js)
+RUN curl -fsSL https://bun.sh/install | bash
+
+# Set the environment variables for Bun
+ENV PATH="/root/.bun/bin:${PATH}"
+
+# Copy the frontend files
+COPY ./apps/web ./
+
+# Install dependencies (Next.js + Bun)
+RUN bun install
+
+# Build the N
