@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,33 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model integrations {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id       String    @db.Uuid
+  provider      String    @db.VarChar
+  access_token  String    @db.VarChar
+  refresh_token String    @db.VarChar
+  connected     Boolean?  @default(false)
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+  updated_at    DateTime? @db.Timestamp(6)
+  users         users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "integrations_user_id_users_id_fk")
+}
+
+model users {
+  id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email        String         @unique(map: "email_idx") @db.VarChar
+  created_at   DateTime?      @default(now()) @db.Timestamp(6)
+  displayName  String?        @db.VarChar
+  profileUrl   String?        @db.VarChar
+  image        String?        @db.VarChar
+  updated_at   DateTime?      @db.Timestamp(6)
+  role         userRole?      @default(user)
+  integrations integrations[]
+}
+
+enum userRole {
+  admin
+  user
 }

@@ -8,7 +8,7 @@ services:
     env_file: ./apps/ai-backend/.env         # Use the backend .env file
     environment:
       POSTGRES_USER: ${POSTGRES_USER}        # From .env file
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}# From .env file
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # From .env file
       POSTGRES_DB: ${POSTGRES_DB}            # From .env file
     ports:
       - "5432:5432"                          # Expose PostgreSQL
